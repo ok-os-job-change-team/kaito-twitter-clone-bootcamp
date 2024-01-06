@@ -17,6 +17,11 @@ RSpec/LetSetup:
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
+# モデルの:inverse_of オプションのチェック
+# 暫定的に無効化。あとで修正する！
+Rails/InverseOf:
+  Enabled: false
+
 # Dryなコードを書けていない箇所を指摘する
 # 暫定的に無効化。あとで修正する！
 Style/IdenticalConditionalBranches:

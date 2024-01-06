@@ -194,4 +194,64 @@ RSpec.describe UsersController, type: :request do
       end
     end
   end
+
+  describe 'GET users/:id/follows' do
+    context 'ログインしているとき' do
+      let!(:user) { create(:user) }
+
+      before do
+        post login_path, params: { email: user.email, password: 'sample_password' }
+      end
+
+      it 'フォローリストページに遷移すること' do
+        aggregate_failures do
+          get follows_user_path(user.id)
+          expect(response.status).to eq 200
+          expect(response.body).to include 'フォローリスト'
+        end
+      end
+    end
+
+    context 'ログインしていないとき' do
+      let!(:user) { create(:user) }
+
+      it 'ログインページにリダイレクトすること' do
+        aggregate_failures do
+          get follows_user_path(user.id)
+          expect(response).to have_http_status(:found)
+          expect(response).to redirect_to login_path
+        end
+      end
+    end
+  end
+
+  describe 'GET users/:id/followers' do
+    context 'ログインしているとき' do
+      let!(:user) { create(:user) }
+
+      before do
+        post login_path, params: { email: user.email, password: 'sample_password' }
+      end
+
+      it 'フォロワーリストページに遷移すること' do
+        aggregate_failures do
+          get followers_user_path(user.id)
+          expect(response.status).to eq 200
+          expect(response.body).to include 'フォロワーリスト'
+        end
+      end
+    end
+
+    context 'ログインしていないとき' do
+      let!(:user) { create(:user) }
+
+      it 'ログインページにリダイレクトすること' do
+        aggregate_failures do
+          get followers_user_path(user.id)
+          expect(response).to have_http_status(:found)
+          expect(response).to redirect_to login_path
+        end
+      end
+    end
+  end
 end

@@ -1,14 +1,8 @@
-<h1>ユーザーリスト</h1>
-
-<%= button_to "ユーザー登録", new_user_path, method: :get %>
+<h1>フォロワーリスト</h1>
 
 <% @users.each do |user| %>
   <h3>ユーザー名</h3>
-  <span><%= user.email %></span>
-  <% if session[:user_id] == user.id %>
-    <%= button_to "ユーザー削除", user_path(user.id), method: :delete %>
-  <% end %>
-
+  <span><%= link_to user.email, user_path(user.id) %></span>
   <% if current_user != user %>
     <% if user.followed_by?(current_user) %>
         <p><%=button_to "フォロー解除", user_relationships_path(user.id), method: :delete %></p>
@@ -17,11 +11,3 @@
     <% end %>
   <% end %>
 <% end %>
-
-<div class="text-notice">
-  <%= flash[:notice] %>
-</div>
-
-<div class="text-notice">
-  <%= flash[:alert] %>
-</div>

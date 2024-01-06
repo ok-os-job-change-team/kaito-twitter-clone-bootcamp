@@ -28,4 +28,8 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.integer 'user_id', null: false
     t.integer 'tweet_id', null: false
   end
+  create_table 'relationships', charset: 'utf8mb4', force: :cascade do |t|
+    t.integer 'following_id', null: false
+    t.integer 'follower_id', null: false
+  end
 end

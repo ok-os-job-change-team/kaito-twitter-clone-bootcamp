@@ -6,6 +6,10 @@
 <p><%= @user.created_at %></p>
 <h3>アカウント更新日</h3>
 <p><%= @user.updated_at %></p>
+<h3>フォロー</h3>
+<p><%=link_to @user.active_relationships.count, follows_user_path %><span>人</span></p>
+<h3>フォロワー</h3>
+<p><%=link_to @user.passive_relationships.count, followers_user_path %><span>人</span></p>
 
 <% if session[:user_id] == @user.id %>
   <%= button_to "ユーザー編集", edit_user_path(@user.id), method: :get %>

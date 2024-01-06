@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :check_logged_in, only: %i[index show]
+  before_action :check_logged_in, only: %i[index show follows followers]
   before_action -> { check_edit_authority(params[:id].to_i) }, only: %i[edit update destroy]
 
   # GET /users
@@ -58,6 +58,18 @@ class UsersController < ApplicationController
       flash.now[:alert] = '変更に失敗しました'
       render :edit
     end
+  end
+
+  # GET /users/:id/follows
+  def follows
+    user = User.find(params[:id])
+    @users = user.followings
+  end
+
+  # GET /users/:id/followers
+  def followers
+    user = User.find(params[:id])
+    @users = user.followers
   end
 
   private
