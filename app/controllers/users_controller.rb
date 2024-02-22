@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:notice] = '登録に成功しました'
-      redirect_to '/users'
+      redirect_to '/login'
     else
       flash.now[:alert] = '登録に失敗しました'
       render '/users/new', layout: 'header'
@@ -35,10 +35,10 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      flash[:notice] = '削除しました'
-      redirect_to '/users'
+      flash[:notice] = 'アカウントを削除しました'
+      redirect_to '/login'
     else
-      flash[:alert] = '削除に失敗しました'
+      flash[:alert] = 'アカウントの削除に失敗しました'
       redirect_to '/users'
     end
   end
@@ -52,10 +52,10 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      flash[:notice] = '変更に成功しました'
+      flash[:notice] = 'アカウント情報の変更に成功しました'
       redirect_to '/users'
     else
-      flash.now[:alert] = '変更に失敗しました'
+      flash.now[:alert] = 'アカウント情報の変更に失敗しました'
       render :edit
     end
   end

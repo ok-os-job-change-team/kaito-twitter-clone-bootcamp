@@ -168,11 +168,11 @@ RSpec.describe UsersController, type: :request do
         post login_path, params: { email: user.email, password: 'sample_password' }
       end
 
-      it 'プロフィール編集ページに遷移すること' do
+      it 'アカウント編集ページに遷移すること' do
         aggregate_failures do
           get edit_user_path(user.id)
           expect(response.status).to eq 200
-          expect(response.body).to include 'プロフィール編集'
+          expect(response.body).to include 'アカウント編集'
         end
       end
     end

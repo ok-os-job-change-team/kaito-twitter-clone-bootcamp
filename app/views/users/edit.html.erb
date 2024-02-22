@@ -1,33 +1,94 @@
-<h1>プロフィール編集</h1>
-
-<%= form_with model: @user, url: user_path, local: true, data: { turbo: "false" } do |form| %>
-
-  <div>
-    <h3>
-      <%= flash[:alert] %> 
-    </h3>
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-
-  <table>
-    <tr>
-      <th>アカウント名</th>
-      <td><%= form.text_field :name %></td>
-    </tr>  
-    <tr>
-      <th>メールアドレス</th>
-      <td><%= form.email_field :email %></td>
-    </tr>
-    <tr>
-      <th>パスワード</th>
-      <td><%= form.password_field :password %></td>
-    </tr>
-    <tr>
-      <td><%= form.submit '変更' %></td>
-    </tr>
-  </table>
+<% content_for :js do %>
+  <%= javascript_import_module_tag "custom/user-delete-modal" %>
 <% end %>
+
+<section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center" style="height: calc(100vh - 96px);">
+  <div class="box" style="width: 600px;">
+    <!-- boxのタイトル -->
+    <div class="content">
+      <div class="block">
+        <h2>アカウント編集</h2>
+        <div class="has-background-grey-lighter" style="height: 2px;"></div>
+      </div>
+    </div>
+
+    <!-- アカウント編集フォーム -->
+    <%= form_with model: @user, url: user_path, data: { turbo: "false" } do |f| %>
+      <div class="field">
+        <label class="label">アカウント名</label>
+        <div class="control">
+          <%= f.text_field :name, class: "input is-black", placeholder: "15字以内" %>
+        </div>
+      </div>    
+      <div class="field">
+        <label class="label">メールアドレス</label>
+        <div class="control">
+          <%= f.email_field :email, class: "input is-black", placeholder: "sample@example.com" %>
+        </div>
+      </div>
+      <div class="block">
+        <div class="field">
+          <label class="label">パスワード</label>
+          <div class="control">
+            <%= f.password_field :password, class: "input is-black", placeholder: "********" %>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <%= f.submit '変更する', class: "button is-fullwidth has-text-white", style: "background-color: #6a994e" %>
+      </div>
+      <div class="block">
+        <%= link_to "キャンセル", :back, class: "button is-fullwidth has-text-white", style: "background-color: #bc4749" %>
+      </div>
+    <% end %>
+
+    <!-- アカウント削除ボタン -->
+    <div class="block pt-5">
+      <div class="has-background-grey-lighter" style="height: 2px;"></div>
+    </div>
+    <div class="block">
+      <button class="button is-fullwidth is-black" id="user-delete-button">アカウント削除</button>
+    </div>
+
+    <!-- フラッシュメッセージ -->
+    <div class="mt-5">
+      <div class="levlel">
+        <% if flash[:alert] %>
+          <div class="notification is-danger is-light has-text-centered">
+            <%= flash[:alert] %> 
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- モーダルウインドウ -->
+    <div class="modal" id="user-delete-modal-window">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="column is-6 is-offset-3">
+          <div class="box">
+            <div class="content-level">
+              <div class="level-left">
+                <button class="delete" aria-label="close" id="close-user-delete"></button>
+              </div>
+              <div class="level-item">
+                <p>アカウントを削除しますか？</p>
+              </div>
+            </div>
+            <div class="level mt-4">
+              <div class="level-item">
+                <%= button_to "はい", user_path(current_user.id), method: :delete, class: "button is-rounded is-white is-inverted has-text-weight-semibold" %>
+              </div>
+              <div class="level-item">
+                <button class="button is-rounded has-text-weight-semibold" aria-label="close" id="cancel-user-delete">いいえ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -40,14 +40,12 @@
     <% end %>
 
     <!-- フラッシュメッセージ -->
-    <div class="mt-5">
-      <div class="levlel">
-        <% if flash[:alert] %>
-          <div class="notification is-danger is-light has-text-centered">
-            <%= flash[:alert] %> 
-          </div>
-        <% end %>
-      </div>
+    <div class="lavel mt-5">
+      <% if flash[:notice] %>
+        <div class="notification is-success is-light has-text-centered"><%= flash[:notice] %></div>
+      <% elsif flash[:alert] %>
+        <div class="notification is-danger is-light has-text-centered"><%= flash[:alert] %></div>
+      <% end %>      
     </div>
   </div>
 </section>

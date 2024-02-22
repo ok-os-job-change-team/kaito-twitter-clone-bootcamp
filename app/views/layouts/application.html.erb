@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_import_module_tag "custom/logout-modal" %>
+      <%= yield(:js) %>
   </head>
 
   <body>
@@ -38,12 +40,12 @@
         <li><a href="<%= new_tweet_path() %>">ひとりごと投稿</a></li>
         <li><a href="<%= tweets_path() %>">ひとりごと一覧</a></li>
         <li><a href="<%= users_path() %>">ユーザーリスト</a></li>
-        <li><a href="<%= edit_user_path(current_user.id) %>">プロフィール編集</a></li>
+        <li><a href="<%= edit_user_path(current_user.id) %>">アカウント編集</a></li>
       </ul>
     </div>
 
     <!-- モーダルウインドウ -->
-    <div class="modal" id="modal-window">
+    <div class="modal" id="logout-modal-window">
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="column is-6 is-offset-3">
