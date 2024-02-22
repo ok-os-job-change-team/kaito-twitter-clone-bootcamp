@@ -1,28 +1,90 @@
-<h1>ツイート修正</h1>
-
-<%= form_with model: @tweet, url: tweet_path, local: true, data: { turbo: "false" } do |form| %>
-  <div>
-    <h3>
-      <%= flash[:alert] %> 
-    </h3>
-      <ul>
-      <% @tweet.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-
-  <table>
-    <tr>
-      <th>タイトル</th>
-      <td><%= form.text_field :title %></td>
-    </tr>
-    <tr>
-      <th>ツイート</th>
-      <td><%= form.text_field :content %></td>
-    </tr>
-    <tr>
-      <td><%= form.submit '修正' %></td>
-    </tr>
-  </table>
+<% content_for :js do %>
+  <%= javascript_import_module_tag "custom/tweet-delete-modal" %>
 <% end %>
+
+<section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center" style="height: calc(100vh - 96px);">
+  <div class="box" style="width: 600px;">
+    <!-- boxのタイトル -->
+    <div class="content">
+      <div class="block">
+        <h2>ひとりごと編集</h2>
+        <div class="has-background-grey-lighter" style="height: 2px;"></div>
+      </div>
+    </div>
+
+    <!-- ひとりごと編集フォーム -->
+    <%= form_with model: @tweet, url: tweet_path, data: { turbo: "false" } do |f| %>
+      <div class="field">
+        <label class="label">タイトル</label>
+        <div class="control">
+          <%= f.text_field :title, class: "input is-black", placeholder: "20字以内" %>
+        </div>
+      </div>
+      <div class="block">
+        <div class="field">
+          <label class="label">本文</label>
+          <div class="control">
+            <%= f.text_area :content, class: "textarea is-black", placeholder: "140字以内", rows: 4 %></td>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="control">
+          <%= f.submit '変更する', class: "button is-link is-fullwidth", style: "background-color: #6a994e" %>
+        </div>
+      </div>
+      <div class="block">
+        <%= link_to "キャンセル", :back, class: "button is-fullwidth has-text-white", style: "background-color: #bc4749" %>
+      </div>
+    <% end %>
+
+    <!-- ひとりごと削除ボタン -->
+    <div class="block pt-5">
+      <div class="has-background-grey-lighter" style="height: 2px;"></div>
+    </div>
+    <div class="block">
+      <button class="button is-fullwidth is-black" id="tweet-delete-button">ひとりごと削除</button>
+    </div>
+
+    <!-- フラッシュメッセージ -->
+    <div class="mt-5">
+      <div class="levlel">
+        <% if flash[:alert] %>
+          <div class="notification is-danger is-light has-text-centered">
+            <%= flash[:alert] %> 
+            <% @tweet.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- モーダルウインドウ -->
+    <div class="modal" id="tweet-delete-modal-window">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="column is-6 is-offset-3">
+          <div class="box">
+            <div class="content-level">
+              <div class="level-left">
+                <button class="delete" aria-label="close" id="close-tweet-delete"></button>
+              </div>
+              <div class="level-item">
+                <p>ひとりごとを削除しますか？</p>
+              </div>
+            </div>
+            <div class="level mt-4">
+              <div class="level-item">
+                <%= button_to "はい", tweet_path(@tweet.id), method: :delete, class: "button is-rounded is-white is-inverted has-text-weight-semibold" %>
+              </div>
+              <div class="level-item">
+                <button class="button is-rounded has-text-weight-semibold" aria-label="close" id="cancel-tweet-delete">いいえ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

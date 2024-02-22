@@ -16,7 +16,6 @@
           <%= f.text_field :title, class: "input is-black", placeholder: "20字以内" %>
         </div>
       </div>
-
       <div class="block">
         <div class="field">
           <label class="label">本文</label>
@@ -25,16 +24,14 @@
           </div>
         </div>
       </div>
-
       <div class="block">
         <div class="control">
           <%= f.submit '送信', class: "button is-link is-fullwidth", style: "background-color: #6a994e" %>
         </div>
       </div>
-
       <div class="block">
         <div class="control">
-          <%= link_to "キャンセル", user_path(current_user.id), class: "button is-link is-fullwidth", style: "background-color: #bc4749" %>
+          <%= link_to "キャンセル", :back, class: "button is-link is-fullwidth", style: "background-color: #bc4749" %>
         </div>
       </div>
     <% end %>

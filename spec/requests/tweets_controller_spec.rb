@@ -124,23 +124,23 @@ RSpec.describe TweetsController, type: :request do
   describe 'GET tweets/:id/edit' do
     let!(:tweet) { create(:tweet, user: user) }
 
-    context 'ログインユーザーと同じユーザーのひとりごと修正ページへアクセスする場合' do
+    context 'ログインユーザーと同じユーザーのひとりごと編集ページへアクセスする場合' do
       let!(:user) { create(:user) }
 
       before do
         post login_path, params: { email: user.email, password: 'sample_password' }
       end
 
-      it 'ひとりごと修正ページに遷移すること' do
+      it 'ひとりごと編集ページに遷移すること' do
         aggregate_failures do
           get edit_tweet_path(tweet.id)
           expect(response.status).to eq 200
-          expect(response.body).to include 'ツイート修正'
+          expect(response.body).to include 'ひとりごと編集'
         end
       end
     end
 
-    context 'ログインユーザーと異なるユーザーのひとりごと修正ページへアクセスする場合' do
+    context 'ログインユーザーと異なるユーザーのひとりごと編集ページへアクセスする場合' do
       let!(:user) { create(:user) }
       let!(:another_user) { create(:user, email: 'hoge@example.com') }
 
