@@ -1,13 +1,94 @@
-<h1>フォローリスト</h1>
+<main class="columns p-1 m-0">
+  <!-- ユーザー情報 -->
+  <div class="column is-one-third">
+    <div class="box">
+      <article class="media">
+        <div class="media-content">
+          <div class="content pl-4">
+            <p class="content mb-0 is-size-4 has-text-weight-semibold" style="color: #386641"><%= @user.name %></p>           
+            <p class="content mb-0 is-size-6 has-text-weight-semibold" style="color: #7d7d7d"><%= @user.email %></p>
+          </div>
+          <div class="content">
+            <nav class="level">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading is-size-7">投稿</p>
+                  <p class="title is-size-5" ><%= @user.tweets.size %></p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading is-size-7">フォロー</p>
+                  <p class="title is-size-5" ><%= @user.followings.size %></p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading is-size-7">フォロワー</p>
+                  <p class="title is-size-5" ><%= @user.followers.size %></p>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>  
+      </article>
+    </div>
+    <div class="box">
+      <aside class="menu">
+        <div class="menu-label is-size-6 has-text-weight-semibold has-text-black">
+          <p>＜メニュー＞</p>
+        </div>
+        <ul class="menu-list">
+          <li><a href="<%= user_path(params[:id]) %>">投稿</a></li>
+          <li><a href="<%= user_favorites_path(params[:id]) %>">いいね一覧</a></li>
+          <li><a href="<%= follows_user_path(params[:id]) %>">フォローリスト</a></li>
+          <li><a href="<%= followers_user_path(params[:id]) %>">フォロワーリスト</a></li>
+        </ul>
+      </aside>
+    </div>
+    <div class="lavel mt-5">
+      <% if flash[:notice] %>
+        <div class="notification is-success is-light has-text-centered"><%= flash[:notice] %></div>
+      <% elsif flash[:alert] %>
+        <div class="notification is-danger is-light has-text-centered"><%= flash[:alert] %></div>
+      <% end %>
+    </div>
+  </div>
 
-<% @users.each do |user| %>
-  <h3>ユーザー名</h3>
-  <span><%= link_to user.email, user_path(user.id) %></span>
-  <% if current_user != user %>
-    <% if user.followed_by?(current_user&.id) %>
-        <p><%=button_to "フォロー解除", user_relationships_path(user.id), method: :delete %></p>
-    <% else %>
-        <p><%=button_to "フォローする", user_relationships_path(user.id), method: :post %></p>
-    <% end %>
-  <% end %>
-<% end %>
+  <!-- フォローリスト -->
+  <div class="column">
+    <div class="box">
+      <div class="content m-0 pl-4">
+        <h4>フォローリスト</h4>
+        <div class="has-background-grey-lighter" style="height: 2px;"></div>
+      </div>
+      <% @following_users.each do |user| %>
+      <article class="media m-1 p-0">
+        <div class="media-content">
+          <div class="columns">
+            <div class="column is-10 pl-4">
+              <div class="tags">
+                <span class="tag is-white is-size-6 has-text-weight-semibold" style="color: #386641">
+                  <p><%= user.name %></p>
+                </span>
+                <span class="tag is-white is-size-6" style="color: #7d7d7d">
+                  <%=link_to user.email, user_path(user.id), style: "color: #7d7d7d" %></p>
+                </span>
+              </div>
+            </div>
+            <div class="column is-2 ">
+              <% if current_user&.id != user.id %>
+                <% if user.followed_by?(current_user&.id) %>
+                  <%= button_to "フォロー中", user_relationships_path(user.id), method: :delete, class: "button is-small has-text-weight-semibold has-text-white mt-1", style: "background-color: #6a994e" %>
+                <% else %>
+                  <%= button_to "フォロー", user_relationships_path(user.id), method: :post, class: "button is-small is-outlined has-text-weight-semibold mt-1", style: "color: #6a994e; border-color: #6a994e" %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </article>
+      <% end %>
+    </div>
+  </div>
+</main>

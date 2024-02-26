@@ -19,13 +19,13 @@
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading is-size-7">フォロー</p>
-                  <p class="title is-size-5">***</p>
+                  <p class="title is-size-5" ><%= @user.followings.size %></p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading is-size-7">フォロワー</p>
-                  <p class="title is-size-5">***</p>
+                  <p class="title is-size-5" ><%= @user.followers.size %></p>
                 </div>
               </div>
             </nav>
@@ -41,8 +41,8 @@
         <ul class="menu-list">
           <li><a href="<%= user_path(params[:id]) %>">投稿</a></li>
           <li><a href="<%= user_favorites_path(params[:id]) %>">いいね一覧</a></li>
-          <li><a href="#">フォローリスト</a></li>
-          <li><a href="#">フォロワーリスト</a></li>
+          <li><a href="<%= follows_user_path(params[:id]) %>">フォローリスト</a></li>
+          <li><a href="<%= followers_user_path(params[:id]) %>">フォロワーリスト</a></li>
         </ul>
       </aside>
     </div>
