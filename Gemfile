@@ -79,6 +79,8 @@ group :development do
   gem 'rubocop-rails', require: false
   # Github: https://github.com/rubocop/rubocop-rspec
   gem 'rubocop-rspec', require: false
+  # Github: https://github.com/ridgepole/ridgepole
+  gem 'ridgepole'
 end
 
 group :test do

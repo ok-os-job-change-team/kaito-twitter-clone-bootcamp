@@ -1,0 +1,62 @@
+<main class="columns p-1 m-0">
+  <!-- メニュー -->
+  <div class="column is-one-third">
+    <div class="box">
+      <aside class="menu">
+        <div class="menu-label is-size-6 has-text-weight-semibold has-text-black">
+          <p>＜管理メニュー＞</p>
+        </div>
+        <ul class="menu-list">
+					<li><a href="<%= admin_users_path() %>">ユーザー管理</a></li>
+          <li><a href="<%= admin_tweets_path() %>">投稿管理</a></li>
+        </ul>
+      </aside>
+    </div>
+    <div class="lavel mt-5">
+      <% if flash[:notice] %>
+        <div class="notification is-success is-light has-text-centered"><%= flash[:notice] %></div>
+      <% elsif flash[:alert] %>
+        <div class="notification is-danger is-light has-text-centered"><%= flash[:alert] %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- 投稿一覧 -->
+  <div class="column">
+    <div class="box">
+      <div class="content m-0 pl-4">
+        <h4>投稿管理</h4>
+        <div class="has-background-grey-lighter" style="height: 2px;"></div>
+      </div>
+      <% @tweets.each do |tweet| %>
+      <article class="media m-0 p-0">
+        <div class="media-content">
+          <nav class="level mb-0 mt-1">
+            <div class="level-left">
+              <div class="tags pl-1 mb-0">
+                <span class="tag mb-0 is-white is-size-6 has-text-weight-semibold" style="color: #386641">
+                  <p><%= tweet.user.name %></p>
+                </span>
+                <span class="tag mb-0 is-white is-size-6 " style="color: #7d7d7d">
+                  <p><%= tweet.user.email %></p>
+                </span>
+              </div>
+            </div>
+						<div class="level-right">
+							<%= button_to "削除", admin_tweet_path(tweet.id), method: :delete, class: "button is-small has-text-weight-semibold has-text-white", style: "background-color: #bc4749" %>
+						</div>
+          </nav>
+          <div class="content pl-4 mb-1">
+            <p class="content mb-0 is-size-6"><%= tweet.updated_at.strftime("%Y年%_m月%_d日 %_H:%M") %></p>           
+            <p class="content mb-0 is-size-6 is-underlined"><%= tweet.title %></p>
+            <p class="content mb-0 is-size-6" ><%= tweet.content %></p>
+          </div>
+          <div class="content is-mobile pl-4 mb-2">
+						<a class="button is-static is-small is-outlined has-text-weight-semibold"><%= "いいね #{tweet.favorites.size}" %></a>
+          </div>
+        </div>
+      </article>
+      <% end %>
+    </div>
+  </div>
+</main>

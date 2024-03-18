@@ -26,4 +26,11 @@ class ApplicationController < ActionController::Base
     flash[:alert] = '自分以外のユーザーは編集・削除できません'
     redirect_to users_path
   end
+
+  def check_admin
+    return if current_user.admin?
+
+    flash[:alert] = '権限がありません'
+    redirect_to users_path
+  end
 end

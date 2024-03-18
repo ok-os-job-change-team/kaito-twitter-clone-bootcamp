@@ -20,14 +20,16 @@ jobs:         # ワークフローで実行されるジョブを設定
         run: |
           docker compose build
 
-      - name: DB create and migrate   # DBの作成とマイグレーション
-                                      # MySQLコンテナが応答できるまで10秒スリープ
-        run: |
+      - name: DB create               # DB作成                                
+        run: |                        # MySQLコンテナが応答できるまで10秒スリープ
           docker compose up -d database
           sleep 10
-          docker compose run app rails db:create
-          docker compose run app rake db:schema:load
-          docker compose run app rails db:seed
+          docker compose run app bundle exec rails db:create
+      
+      - name: DB migrate              # DBマイグレーション
+        run: |
+          docker compose run app bundle exec ridgepole --config config/database.yml --file db/Schemafile --apply -E test
+          docker compose run app bundle exec rails db:seed RAILS_ENV=test
 
       - name: Run Rubocop              # Rubocop実行
         run: docker compose run app bundle exec rubocop

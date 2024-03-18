@@ -1,0 +1,56 @@
+<main class="columns p-1 m-0">
+  <!-- メニュー -->
+  <div class="column is-one-third">
+    <div class="box">
+      <aside class="menu">
+        <div class="menu-label is-size-6 has-text-weight-semibold has-text-black">
+          <p>＜管理メニュー＞</p>
+        </div>
+        <ul class="menu-list">
+					<li><a href="<%= admin_users_path() %>">ユーザー管理</a></li>
+          <li><a href="<%= admin_tweets_path() %>">投稿管理</a></li>
+        </ul>
+      </aside>
+    </div>
+    <div class="lavel mt-5">
+      <% if flash[:notice] %>
+        <div class="notification is-success is-light has-text-centered"><%= flash[:notice] %></div>
+      <% elsif flash[:alert] %>
+        <div class="notification is-danger is-light has-text-centered"><%= flash[:alert] %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- ユーザーリスト -->
+  <div class="column">
+    <div class="box">
+      <div class="content m-0 pl-4">
+        <h4>ユーザー管理</h4>
+        <div class="has-background-grey-lighter" style="height: 2px;"></div>
+      </div>
+      <% @users.each do |user| %>
+      <article class="media m-1 p-0">
+        <div class="media-content">
+          <div class="columns">
+            <div class="column is-10 pl-4">
+              <div class="tags">
+                <span class="tag is-white is-size-6 has-text-weight-semibold" style="color: #386641">
+                  <p><%= user.name %></p>
+                </span>
+                <span class="tag is-white is-size-6" style="color: #7d7d7d">
+                  <%=link_to user.email, user_path(user.id), style: "color: #7d7d7d" %></p>
+                </span>
+              </div>
+            </div>
+            <div class="column is-2 ">
+              <% if current_user&.id != user.id %>
+                <%= button_to "削除", admin_user_path(user.id), method: :delete, class: "button is-small has-text-weight-semibold has-text-white mt-1", style: "background-color: #bc4749" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </article>
+      <% end %>
+    </div>
+  </div>
+</main>
