@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   app:
     build:
@@ -7,15 +5,13 @@ services:
       dockerfile: ./docker/rails/Dockerfile
     container_name: web_app
     # unicornを使う場合は以下を実行
-    command: bundle exec unicorn -p 3000 -c /app/config/unicorn.rb
+    command: bundle exec unicorn -p 3000 -c ./config/unicorn.rb
     # unicornを使わない場合は以下を実行
     # command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
-      - /var/tmp
+      # UnicornのUNIXソケットをnginxコンテナと共有
+      - shared_socket:/var/tmp
       - .:/app
-
-    ports:
-      - "3000:3000"
     tty: true
     stdin_open: true
   # ====RDSを使う場合は以下をコメントアウト====
@@ -30,7 +26,7 @@ services:
     ports:
       - '3308:3306'
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
       - ./sql:/usr/scripts
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -44,5 +40,12 @@ services:
     container_name: nginx
     ports:
       - '80:80'
-    volumes_from:
-      - app
+    volumes:
+      # UnicornのUNIXソケットをappコンテナと共有
+      - shared_socket:/var/tmp
+      - ./public:/var/www/html/public
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+volumes:
+    shared_socket:
+    mysql-data:
