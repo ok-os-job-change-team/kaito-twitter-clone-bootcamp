@@ -35,3 +35,6 @@
 /config/master.key
 
 mysql-data/
+
+# Ignore env
+/.env
